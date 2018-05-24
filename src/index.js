@@ -9,6 +9,7 @@ import { createStore, applyMiddleware, compose } from 'redux'
 
 const initialState = {
   assets: 0,
+  accretionRate: 10,
 }
 
 const reducer = (state = initialState, action) => {
@@ -16,7 +17,8 @@ const reducer = (state = initialState, action) => {
     case 'accrueAssets':
       return {
         ...state,
-        assets: state.assets + 10,
+        assets: state.assets + state.accretionRate,
+        accretionRate: state.accretionRate ? state.accretionRate * 0.9 : 0,
       }
     default:
       return state
