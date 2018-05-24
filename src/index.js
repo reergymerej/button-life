@@ -7,7 +7,23 @@ import registerServiceWorker from './registerServiceWorker';
 import { Provider } from 'react-redux'
 import { createStore, applyMiddleware, compose } from 'redux'
 
-const reducer = (state = {}, action) => state
+const initialState = {
+  assets: 0,
+}
+
+const reducer = (state = initialState, action) => {
+  switch (action.type) {
+    case 'accrueAssets':
+      return {
+        ...state,
+        assets: state.assets + 10,
+      }
+    default:
+      return state
+  }
+}
+
+
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
 const middleware = {}
 const store = createStore(reducer, /* preloadedState, */ composeEnhancers(
