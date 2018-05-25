@@ -5,6 +5,10 @@ import State from './State'
 import Button from './Button'
 
 class App extends React.Component {
+  componentDidMount() {
+    this.props.addPlugin('accrue')
+  }
+
   render() {
     const { plugins } = this.props
     return (
@@ -29,4 +33,13 @@ const mapStateToProps = state => ({
   plugins: state.plugins,
 })
 
-export default connect(mapStateToProps)(App)
+const mapDispatchToProps = {
+  addPlugin(type) {
+    return {
+      type: 'add-plugin',
+      pluginType: type,
+    }
+  },
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(App)

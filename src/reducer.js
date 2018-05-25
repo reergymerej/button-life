@@ -1,57 +1,10 @@
-const accrue = {
-  type: 'accrue',
-  text: 'Accrue Assets',
-  getInitialState(state) {
-    return {
-      ...state,
-      accretionRate: 10,
-    }
-  },
-  mutator(state) {
-    return {
-      ...state,
-      assets: state.assets + state.accretionRate,
-      accretionRate: state.accretionRate ? state.accretionRate * 0.9 : 0,
-    }
-  },
-  enabled(state) {
-    return true
-  },
-}
-
-const increaseAccretionRate = {
-  type: 'increaseAccretionRate',
-  text: 'Increase Accretion Rate',
-  getInitialState(state) {
-    return {
-      ...state,
-      accretionRateThreshold: 50,
-      increaseAccretionRateStep: 15,
-    }
-  },
-  mutator(state) {
-    return {
-      ...state,
-      accretionRate: state.accretionRate + state.increaseAccretionRateStep,
-    }
-  },
-  enabled(state) {
-    return state.assets >= state.accretionRateThreshold
-  },
-}
+import * as plugins from './plugins'
 
 let initialState = {
   clicks: 0,
   assets: 0,
-  plugins: [
-    accrue,
-    increaseAccretionRate,
-  ],
+  plugins: [],
 }
-
-initialState.plugins.forEach(plugin => {
-  initialState = plugin.getInitialState(initialState)
-})
 
 const reducer = (state = initialState, action) => {
   state.plugins.forEach(plugin => {
@@ -61,17 +14,16 @@ const reducer = (state = initialState, action) => {
     }
   })
 
+  if (action.type === 'add-plugin') {
+    const plugin = plugins[action.pluginType]
+    state.plugins = [
+      ...state.plugins,
+      plugin,
+    ]
+    state = plugins[action.pluginType].getInitialState(state)
+  }
+
   return state
 }
-
-// TODO: register the initial plugin like this too
-const addPlugin = plugin => {
-  initialState.plugins.forEach(plugin => {
-    // We need to do this when adding a new plugin at runtime as well.
-    initialState = plugin.getInitialState(initialState)
-  })
-}
-
-// addPlugin(accrue)
 
 export default reducer
