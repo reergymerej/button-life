@@ -27,7 +27,6 @@ class App extends React.Component {
 
   render() {
     const { plugins } = this.props
-    console.log(plugins)
     return (
       <div className="App">
         <h1>Button Life</h1>
