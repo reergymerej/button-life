@@ -2,12 +2,19 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { selectors } from './reducer'
 
+const StateItem = (props) => (
+  <div className="StateItem">
+    <label>{props.name}</label>: <span className="value">{Math.round(props.value * 100) / 100}</span>
+  </div>
+)
+
 const State = (props) => (
   <div className="State">
     {Object.keys(props.values).map(key => (
-      <div key={key}>
-        {key}: {props.values[key]}
-      </div>
+      <StateItem key={key}
+        name={key}
+        value={props.values[key]}
+      />
     ))}
   </div>
 )

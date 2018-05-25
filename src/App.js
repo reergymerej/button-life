@@ -4,18 +4,43 @@ import './App.css'
 import State from './State'
 import Button from './Button'
 
+const nextPlugins = [
+  'accrue',
+  'accretion',
+  'fatigue',
+]
+
+const activePlugins = []
+
 class App extends React.Component {
-  componentDidMount() {
-    this.props.addPlugin('accrue')
-    this.props.addPlugin('accretion')
-    this.props.addPlugin('fatigue')
+  handleNextClick = () => {
+    const plugin = nextPlugins.shift()
+    activePlugins.push(plugin)
+    this.props.addPlugin(plugin)
+  }
+
+  handleRemoveClick = () => {
+    const plugin = activePlugins.pop()
+    nextPlugins.unshift(plugin)
+    this.props.removePlugin(plugin)
   }
 
   render() {
     const { plugins } = this.props
+    console.log(plugins)
     return (
       <div className="App">
         <h1>Button Life</h1>
+        <div>
+          {
+            nextPlugins.length > 0 &&
+              <button onClick={this.handleNextClick}>add plugin</button>
+          }
+          {
+            activePlugins.length > 0 &&
+              <button onClick={this.handleRemoveClick}>remove plugin</button>
+          }
+        </div>
         <div className="content">
           <State />
           <div className="buttons">
@@ -39,6 +64,13 @@ const mapDispatchToProps = {
   addPlugin(type) {
     return {
       type: 'plugin-add',
+      pluginType: type,
+    }
+  },
+
+  removePlugin(type) {
+    return {
+      type: 'plugin-remove',
       pluginType: type,
     }
   },

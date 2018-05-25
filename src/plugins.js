@@ -85,8 +85,9 @@ export const fatigue = {
           fatigue_accretionRateModifier: accretionRateModifier,
         } },
       enabled(state) {
-        return state.accrue_rateModifier > 0
+        return state.accrue_rateModifier > 0.005
       },
     },
   },
 }
+

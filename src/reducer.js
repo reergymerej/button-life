@@ -66,9 +66,29 @@ const pluginAdd = (state, action) => {
   return state
 }
 
+const pluginRemove = (state, action) => {
+  const registeredPluginIndex = state.registeredPluginsByType[action.pluginType]
+  const plugin = state.plugins[action.pluginType]
+  const plugins = [
+    ...state.plugins.slice(0, registeredPluginIndex),
+    ...state.plugins.slice(registeredPluginIndex + 1),
+  ]
+  delete state.registeredPluginsByType[action.pluginType]
+  return {
+    ...state,
+    plugins,
+    registeredPluginsByType: {
+      ...state.registeredPluginsByType,
+      [action.pluginType]: -1,
+    },
+  }
+  return state
+}
+
 const reducerBranches = {
   'plugin-execute': pluginExecute,
   'plugin-add': pluginAdd,
+  'plugin-remove': pluginRemove,
 }
 
 const reducer = (state = initialState, action) => {
