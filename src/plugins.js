@@ -62,11 +62,13 @@ export const sleep = {
     return state['sleep.needsSleep']
   },
   augmentations: {
-    'accrue'(state) {
-      return {
-        ...state,
-        'sleep.needsSleep': true,
-      }
-    },
+    'accrue': {
+      mutator(state) {
+        return {
+          ...state,
+          'sleep.needsSleep': true,
+        }
+      },
+    }
   },
 }

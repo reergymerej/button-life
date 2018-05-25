@@ -7,10 +7,20 @@ let initialState = {
   registeredPluginsByType: {},
 }
 
-const getMutatorAugmentations = (forPluginType, plugins) =>
-  plugins
+const exists = (x) => !!x
+
+const getAugmentations = (forPluginType, plugins) => {
+  return plugins
     .map(x => (x.augmentations || {})[forPluginType])
-    .filter(x => !!x)
+    .filter(exists)
+}
+
+const getMutatorAugmentations = (forPluginType, plugins) => {
+  const augmentations = getAugmentations(forPluginType, plugins)
+  return augmentations
+    .map(x => x.mutator)
+    .filter(exists)
+}
 
 const getPlugin = (type, state) => {
   const registeredPluginIndex = state.registeredPluginsByType[type]

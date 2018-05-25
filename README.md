@@ -59,6 +59,6 @@ runtime:
 
 ## TODO
 
+* Augment other plugins' enabled checks.
 * Support visible state
-* Support mutator augmentation
 * Make add/remove plugins a plugin
