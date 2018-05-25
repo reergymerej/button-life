@@ -15,7 +15,7 @@ class App extends React.Component {
           <div className="buttons">
             {
               plugins.map(plugin =>
-                <Button key={plugin.name} plugin={plugin} />
+                <Button key={plugin.type} plugin={plugin} />
               )
             }
           </div>

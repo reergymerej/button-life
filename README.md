@@ -12,3 +12,15 @@ plugins must:
 plugins can:
 
 * augment other plugins' state mutators
+
+
+
+```js
+{
+  name: 'accrue',
+  text: 'Accrue Assets',
+  enabled(state) { return true },
+  getInitialState(state) { return {} },
+  mutator(state) { return {} },
+}
+```

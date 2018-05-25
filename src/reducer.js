@@ -1,9 +1,6 @@
 const accrue = {
-  name: 'accrue',
+  type: 'accrue',
   text: 'Accrue Assets',
-  enabled(state) {
-    return true
-  },
   getInitialState(state) {
     return {
       ...state,
@@ -17,13 +14,38 @@ const accrue = {
       accretionRate: state.accretionRate ? state.accretionRate * 0.9 : 0,
     }
   },
+  enabled(state) {
+    return true
+  },
+}
+
+const increaseAccretionRate = {
+  type: 'increaseAccretionRate',
+  text: 'Increase Accretion Rate',
+  getInitialState(state) {
+    return {
+      ...state,
+      accretionRateThreshold: 50,
+      increaseAccretionRateStep: 15,
+    }
+  },
+  mutator(state) {
+    return {
+      ...state,
+      accretionRate: state.accretionRate + state.increaseAccretionRateStep,
+    }
+  },
+  enabled(state) {
+    return state.assets >= state.accretionRateThreshold
+  },
 }
 
 let initialState = {
-  clicks: -1,
+  clicks: 0,
   assets: 0,
   plugins: [
     accrue,
+    increaseAccretionRate,
   ],
 }
 
@@ -32,17 +54,14 @@ initialState.plugins.forEach(plugin => {
 })
 
 const reducer = (state = initialState, action) => {
-  state.clicks = state.clicks + 1
-  // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/reduce
-  // TODO: use reducer
   state.plugins.forEach(plugin => {
-    state = plugin.mutator(state)
+    if (plugin.type === action.type) {
+      state = plugin.mutator(state)
+      state.clicks = state.clicks + 1
+    }
   })
 
-  switch (action.type) {
-    default:
-      return state
-  }
+  return state
 }
 
 // TODO: register the initial plugin like this too
@@ -53,6 +72,6 @@ const addPlugin = plugin => {
   })
 }
 
-addPlugin(accrue)
+// addPlugin(accrue)
 
 export default reducer
