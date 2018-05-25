@@ -35,7 +35,7 @@ plugins must:
 
 plugins can:
 
-* provide state visible to user (for showing how decisions are made)
+* make parts of state visible to user (for showing how decisions are made)
 * augment other plugins' state mutators
 
 
@@ -59,5 +59,7 @@ runtime:
 
 ## TODO
 
+* Support visible state
 * Namespace state for plugins
 * Support mutator augmentation
+* Make add/remove plugins a plugin

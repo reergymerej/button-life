@@ -37,7 +37,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = {
   addPlugin(type) {
     return {
-      type: 'add-plugin',
+      type: 'plugin-add',
       pluginType: type,
     }
   },

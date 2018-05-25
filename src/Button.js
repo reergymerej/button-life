@@ -21,7 +21,8 @@ const mapDispatchToProps = (dispatch, ownProps) => {
   return {
     execute() {
       dispatch({
-        type: ownProps.plugin.type,
+        type: 'plugin-execute',
+        pluginType: ownProps.plugin.type,
       })
     }
   }
