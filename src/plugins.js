@@ -91,3 +91,36 @@ export const fatigue = {
   },
 }
 
+// randomly stops you from sleeping
+export const insomnia = {
+  type: 'insomnia',
+  text: 'Relieve Insomnia',
+  getInitialState(state) {
+    return {
+      ...state,
+      insomnia_active: false,
+    }
+  },
+  mutator(state) {
+    return {
+      ...state,
+      insomnia_active: false,
+    }
+  },
+  enabled(state) {
+    return state.insomnia_active
+  },
+  augmentations: {
+    fatigue: {
+      mutator(state) {
+        return {
+          ...state,
+          insomnia_active: Math.random() <= 0.5,
+        }
+      },
+      enabled(state) {
+        return !state.insomnia_active
+      },
+    },
+  },
+}

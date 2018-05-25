@@ -8,6 +8,7 @@ const nextPlugins = [
   'accrue',
   'accretion',
   'fatigue',
+  'insomnia',
 ]
 
 const activePlugins = []
