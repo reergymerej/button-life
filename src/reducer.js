@@ -89,4 +89,29 @@ export const selectors = {
       return accumulator && enabledAugmentation(state)
     }, enabled)
   },
+
+  getVisibleStateValues(state) {
+    // We could determine this by state, modifying when adding/removing a
+    // plugin, but this is more functional.
+    const visibleStateValues = [
+      {
+        'Clicks': 'clicks',
+        'Assets': 'assets',
+      },
+    ]
+    state.plugins.forEach(plugin => {
+      if (plugin.visibleState) {
+        visibleStateValues.push(plugin.visibleState)
+      }
+    })
+
+    const values = {}
+    visibleStateValues.forEach(x => {
+      Object.keys(x).forEach(key => {
+        values[key] = state[x[key]]
+      })
+    })
+
+    return values
+  },
 }

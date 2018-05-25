@@ -48,5 +48,4 @@ runtime:
 
 ## TODO
 
-* Support visible state
 * Make add/remove plugins a plugin

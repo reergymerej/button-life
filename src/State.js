@@ -1,5 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import { selectors } from './reducer'
 
 const State = (props) => (
   <div className="State">
@@ -12,10 +13,7 @@ const State = (props) => (
 )
 
 const mapStateToProps = state => ({
-  values: {
-    clicks: state.clicks,
-    assets: state.assets,
-  },
+  values: selectors.getVisibleStateValues(state),
 })
 
 export default connect(mapStateToProps)(State)

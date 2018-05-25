@@ -19,6 +19,7 @@ export const accrue = {
   },
 }
 
+
 export const increaseAccretionRate = {
   type: 'increaseAccretionRate',
   text: 'Increase Accretion Rate',
@@ -39,6 +40,10 @@ export const increaseAccretionRate = {
   },
   enabled(state) {
     return state.assets >= state.accretionRateIncreaseCost
+  },
+  visibleState: {
+    'Accretion Rate': 'accretionRate',
+    'Accretion Rate Cost': 'accretionRateIncreaseCost',
   },
 }
 
