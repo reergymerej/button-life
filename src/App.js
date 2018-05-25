@@ -7,8 +7,8 @@ import Button from './Button'
 class App extends React.Component {
   componentDidMount() {
     this.props.addPlugin('accrue')
-    this.props.addPlugin('increaseAccretionRate')
-    this.props.addPlugin('sleep')
+    this.props.addPlugin('accretion')
+    this.props.addPlugin('fatigue')
   }
 
   render() {

@@ -4,79 +4,87 @@ export const accrue = {
   getInitialState(state) {
     return {
       ...state,
-      accretionRate: 10,
+      accrue_rate: 10,
+      accrue_rateModifier: 1,
     }
   },
   mutator(state) {
     return {
       ...state,
-      assets: state.assets + state.accretionRate,
-      accretionRate: state.accretionRate ? state.accretionRate * 0.9 : 0,
+      assets: state.assets + (state.accrue_rate * state.accrue_rateModifier),
     }
   },
   enabled(state) {
     return true
   },
+  visibleState: {
+    'Accretion Rate': 'accrue_rate',
+    'Accretion Rate (mod)': 'accrue_rateModifier',
+  },
 }
 
-
-export const increaseAccretionRate = {
-  type: 'increaseAccretionRate',
+export const accretion = {
+  type: 'accretion',
   text: 'Increase Accretion Rate',
   getInitialState(state) {
     return {
       ...state,
-      accretionRateIncreaseCost: 20,
-      increaseAccretionRateStep: 15,
+      accretion_upgradeCost: 20,
+      accretion_rateModifierStep: 2,
     }
   },
   mutator(state) {
     return {
       ...state,
-      accretionRate: state.accretionRate + state.increaseAccretionRateStep,
-      accretionRateIncreaseCost: state.accretionRateIncreaseCost * 2,
-      assets: state.assets - state.accretionRateIncreaseCost,
+      accrue_rate: state.accrue_rate * state.accretion_rateModifierStep,
+      accretion_upgradeCost: state.accretion_upgradeCost * 2,
+      assets: state.assets - state.accretion_upgradeCost,
     }
   },
   enabled(state) {
-    return state.assets >= state.accretionRateIncreaseCost
+    return state.assets >= state.accretion_upgradeCost
   },
   visibleState: {
-    'Accretion Rate': 'accretionRate',
-    'Accretion Rate Cost': 'accretionRateIncreaseCost',
+    'Accretion Rate Upgrade': 'accretion_upgradeCost',
   },
 }
 
-// This makes it so the user must sleep after accruing assets.
-export const sleep = {
-  type: 'sleep',
+// Reduces accretion rate for each turn.  Resets it once the user sleeps.
+export const fatigue = {
+  type: 'fatigue',
   text: 'Sleep',
   getInitialState(state) {
     return {
       ...state,
-      'sleep.needsSleep': false,
+      fatigue_accretionRateModifier: 1,
+      fatigue_maxAccretionRate: state.accrue_rate,
     }
   },
   mutator(state) {
     return {
       ...state,
-      'sleep.needsSleep': false,
+      fatigue_accretionRateModifier: 1,
+      accrue_rateModifier: 1,
     }
   },
   enabled(state) {
-    return state['sleep.needsSleep']
+    return state.fatigue_accretionRateModifier < 1
   },
   augmentations: {
-    'accrue': {
+    accrue: {
       mutator(state) {
+        const accretionRateModifier = Math.max(
+          state.fatigue_accretionRateModifier - 0.20,
+          0
+        )
         return {
           ...state,
-          'sleep.needsSleep': true,
-        }
-      },
+          accrue_rateModifier: state.accrue_rateModifier * accretionRateModifier,
+          fatigue_accretionRateModifier: accretionRateModifier,
+        } },
       enabled(state) {
-        return !state['sleep.needsSleep']
+        return state.accrue_rateModifier > 0
       },
-    }
+    },
   },
 }
