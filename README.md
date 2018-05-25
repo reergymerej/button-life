@@ -36,7 +36,9 @@ plugins must:
 plugins can:
 
 * make parts of state visible to user (for showing how decisions are made)
-* augment other plugins' state mutators
+* augment other plugins'
+  * state mutators
+  * enabled state
 
 
 runtime:

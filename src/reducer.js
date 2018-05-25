@@ -108,7 +108,10 @@ export const selectors = {
     const values = {}
     visibleStateValues.forEach(x => {
       Object.keys(x).forEach(key => {
-        values[key] = state[x[key]]
+        const computer = x[key]
+        values[key] = typeof computer === 'function'
+          ? computer(state)
+          : state[computer]
       })
     })
 

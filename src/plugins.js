@@ -18,18 +18,20 @@ export const accrue = {
     return true
   },
   visibleState: {
-    'Accretion Rate': 'accrue_rate',
-    'Accretion Rate (mod)': 'accrue_rateModifier',
+    'Accrue': (state) => {
+      return (state.accrue_rate * state.accrue_rateModifier)
+    },
   },
 }
 
+// Allows the user to upgrade earning power.
 export const accretion = {
   type: 'accretion',
   text: 'Increase Accretion Rate',
   getInitialState(state) {
     return {
       ...state,
-      accretion_upgradeCost: 20,
+      accretion_upgradeCost: 100,
       accretion_rateModifierStep: 2,
     }
   },
@@ -49,7 +51,7 @@ export const accretion = {
   },
 }
 
-// Reduces accretion rate for each turn.  Resets it once the user sleeps.
+// Makes the user seem to tire while accruing assets.
 export const fatigue = {
   type: 'fatigue',
   text: 'Sleep',
