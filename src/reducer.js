@@ -7,12 +7,30 @@ let initialState = {
   registeredPluginsByType: {},
 }
 
-const pluginExecute = (state, action) => {
-  const registeredPluginIndex = state.registeredPluginsByType[action.pluginType]
+const getMutatorAugmentations = (forPluginType, plugins) =>
+  plugins
+    .map(x => (x.augmentations || {})[forPluginType])
+    .filter(x => !!x)
+
+const getPlugin = (type, state) => {
+  const registeredPluginIndex = state.registeredPluginsByType[type]
   if (registeredPluginIndex !== undefined) {
-    const plugin = state.plugins[registeredPluginIndex]
-    state = plugin.mutator(state)
+    return state.plugins[registeredPluginIndex]
+  }
+}
+
+const pluginExecute = (state, action) => {
+  const type = action.pluginType
+  const plugin = getPlugin(type, state)
+  if (plugin) {
     state.clicks = state.clicks + 1
+    state = plugin.mutator(state)
+    const plugins = state.plugins
+    const otherMutators = getMutatorAugmentations(type, plugins)
+    state = otherMutators.reduce(
+      (accumulator, mutator) => mutator(accumulator),
+      state
+    )
   }
   return state
 }

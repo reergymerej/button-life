@@ -60,6 +60,5 @@ runtime:
 ## TODO
 
 * Support visible state
-* Namespace state for plugins
 * Support mutator augmentation
 * Make add/remove plugins a plugin

@@ -41,3 +41,32 @@ export const increaseAccretionRate = {
     return state.assets >= state.accretionRateIncreaseCost
   },
 }
+
+// This makes it so the user must sleep after accruing assets.
+export const sleep = {
+  type: 'sleep',
+  text: 'Sleep',
+  getInitialState(state) {
+    return {
+      ...state,
+      'sleep.needsSleep': false,
+    }
+  },
+  mutator(state) {
+    return {
+      ...state,
+      'sleep.needsSleep': false,
+    }
+  },
+  enabled(state) {
+    return state['sleep.needsSleep']
+  },
+  augmentations: {
+    'accrue'(state) {
+      return {
+        ...state,
+        'sleep.needsSleep': true,
+      }
+    },
+  },
+}
