@@ -1,3 +1,27 @@
+# Button Life
+
+This is kind of a joke, but it turned into a cool architecture challenge.  Lots
+of games boil down to basically these three things:
+
+1. You have assets.
+2. You accrue assets.
+3. You increase the accretion rate.
+
+I thought it would be a good idea to strip away the silliness and just have
+these options.  My wife wasn't as excited and we joked that we could expand the
+game and have all sorts of buttons you press.
+
+And here we are.
+
+That example can actually be stripped down a bit more.
+
+1. You have assets.
+
+That's the kernel of the game.  It sucks.  But this is an architecture challenge
+that allows for expansion.
+
+
+
 ## plugin interface
 
 plugins must:
@@ -11,8 +35,14 @@ plugins must:
 
 plugins can:
 
-* augment other plugins' state mutators
 * provide state visible to user (for showing how decisions are made)
+* augment other plugins' state mutators
+
+
+runtime:
+
+* can add plugins
+* can remove plugins
 
 
 
@@ -25,3 +55,9 @@ plugins can:
   mutator(state) { return {} },
 }
 ```
+
+
+## TODO
+
+* Namespace state for plugins
+* Support mutator augmentation

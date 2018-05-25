@@ -11,7 +11,6 @@ const State = (props) => (
   </div>
 )
 
-
 const mapStateToProps = state => ({
   values: {
     clicks: state.clicks,
