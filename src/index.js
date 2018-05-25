@@ -8,11 +8,13 @@ import { Provider } from 'react-redux'
 import { createStore, applyMiddleware, compose } from 'redux'
 
 const initialState = {
+  clicks: -1,
   assets: 0,
   accretionRate: 10,
 }
 
 const reducer = (state = initialState, action) => {
+  state.clicks = state.clicks + 1
   switch (action.type) {
     case 'accrueAssets':
       return {
