@@ -69,6 +69,9 @@ export const sleep = {
           'sleep.needsSleep': true,
         }
       },
+      enabled(state) {
+        return !state['sleep.needsSleep']
+      },
     }
   },
 }

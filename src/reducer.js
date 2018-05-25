@@ -22,6 +22,13 @@ const getMutatorAugmentations = (forPluginType, plugins) => {
     .filter(exists)
 }
 
+const getEnabledAugmentations = (forPluginType, plugins) => {
+  const augmentations = getAugmentations(forPluginType, plugins)
+  return augmentations
+    .map(x => x.enabled)
+    .filter(exists)
+}
+
 const getPlugin = (type, state) => {
   const registeredPluginIndex = state.registeredPluginsByType[type]
   if (registeredPluginIndex !== undefined) {
@@ -70,3 +77,16 @@ const reducer = (state = initialState, action) => {
 }
 
 export default reducer
+
+export const selectors = {
+  isEnabled(plugin, state) {
+    // The plugin checks if it is enabled based on state.
+    // Other plugins can add additional checks.
+    // All must be true.
+    const enabled = plugin.enabled(state)
+    const augmentations = getEnabledAugmentations(plugin.type, state.plugins)
+    return augmentations.reduce((accumulator, enabledAugmentation) => {
+      return accumulator && enabledAugmentation(state)
+    }, enabled)
+  },
+}

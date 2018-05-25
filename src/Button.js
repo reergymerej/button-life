@@ -1,5 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import { selectors } from './reducer'
 
 const Button = (props) => (
   <button
@@ -12,7 +13,7 @@ const Button = (props) => (
 const mapStateToProps = (state, ownProps) => {
   const { plugin } = ownProps
   return {
-    enabled: plugin.enabled(state),
+    enabled: selectors.isEnabled(plugin, state),
     text: plugin.text,
   }
 }
