@@ -46,19 +46,7 @@ runtime:
 
 
 
-```js
-{
-  name: 'accrue',
-  text: 'Accrue Assets',
-  enabled(state) { return true },
-  getInitialState(state) { return {} },
-  mutator(state) { return {} },
-}
-```
-
-
 ## TODO
 
-* Augment other plugins' enabled checks.
 * Support visible state
 * Make add/remove plugins a plugin
