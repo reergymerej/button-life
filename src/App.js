@@ -7,6 +7,7 @@ import Button from './Button'
 class App extends React.Component {
   componentDidMount() {
     this.props.addPlugin('accrue')
+    this.props.addPlugin('increaseAccretionRate')
   }
 
   render() {

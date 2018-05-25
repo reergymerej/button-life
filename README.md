@@ -12,6 +12,7 @@ plugins must:
 plugins can:
 
 * augment other plugins' state mutators
+* provide state visible to user (for showing how decisions are made)
 
 
 

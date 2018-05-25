@@ -25,7 +25,7 @@ export const increaseAccretionRate = {
   getInitialState(state) {
     return {
       ...state,
-      accretionRateThreshold: 50,
+      accretionRateIncreaseCost: 20,
       increaseAccretionRateStep: 15,
     }
   },
@@ -33,9 +33,11 @@ export const increaseAccretionRate = {
     return {
       ...state,
       accretionRate: state.accretionRate + state.increaseAccretionRateStep,
+      accretionRateIncreaseCost: state.accretionRateIncreaseCost * 2,
+      assets: state.assets - state.accretionRateIncreaseCost,
     }
   },
   enabled(state) {
-    return state.assets >= state.accretionRateThreshold
+    return state.assets >= state.accretionRateIncreaseCost
   },
 }
