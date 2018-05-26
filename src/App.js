@@ -5,15 +5,23 @@ import State from './State'
 import Button from './Button'
 
 const nextPlugins = [
+]
+
+const activePlugins = [
   'accrue',
   'accretion',
   'fatigue',
   'insomnia',
+  'defend',
 ]
 
-const activePlugins = []
-
 class App extends React.Component {
+  componentDidMount() {
+    activePlugins.forEach(plugin =>
+      this.props.addPlugin(plugin)
+    )
+  }
+
   handleNextClick = () => {
     const plugin = nextPlugins.shift()
     activePlugins.push(plugin)

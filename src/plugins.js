@@ -115,11 +115,48 @@ export const insomnia = {
       mutator(state) {
         return {
           ...state,
-          insomnia_active: Math.random() <= 0.5,
+          insomnia_active: Math.random() <= 0.3,
         }
       },
       enabled(state) {
         return !state.insomnia_active
+      },
+    },
+  },
+}
+
+// Defend yourself from random attacks
+export const defend = {
+  type: 'defend',
+  text: 'Defend Yourself',
+  getInitialState(state) {
+    return {
+      ...state,
+      defend_underAttack: false,
+    }
+  },
+  mutator(state) {
+    return {
+      ...state,
+      defend_underAttack: false,
+    }
+  },
+  enabled(state) {
+    return state.defend_underAttack
+  },
+  augmentations: {
+    // Apply to ALL plugins.
+    '*': {
+      mutator(state) {
+        const active = state.defend_underAttack
+        const positive = num => num < 0 ? 0 : num
+        return {
+          ...state,
+          defend_underAttack: active || Math.random() <= 0.1,
+          assets: active
+            ? positive(state.assets - 100)
+            : state.assets,
+        }
       },
     },
   },

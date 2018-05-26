@@ -11,7 +11,11 @@ const exists = (x) => !!x
 
 const getAugmentations = (forPluginType, plugins) => {
   return plugins
-    .map(x => (x.augmentations || {})[forPluginType])
+    .map(x => {
+      const augmentations = x.augmentations || {}
+      return augmentations[forPluginType]
+        || augmentations['*']
+    })
     .filter(exists)
 }
 

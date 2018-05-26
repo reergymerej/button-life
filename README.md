@@ -51,3 +51,4 @@ runtime:
 ## TODO
 
 * Make add/remove plugins a plugin
+* Allow for dynamic button text
