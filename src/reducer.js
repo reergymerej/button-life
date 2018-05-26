@@ -7,6 +7,8 @@ let initialState = {
   registeredPluginsByType: {},
 }
 
+const curry = (fn, arg) => (...args) => fn(arg, ...args)
+
 const exists = (x) => !!x
 
 const getAugmentatinosForPlugin = (plugin, type) => {
@@ -14,25 +16,21 @@ const getAugmentatinosForPlugin = (plugin, type) => {
   return augmentations[type] || augmentations['*']
 }
 
-const getAugmentations = (forPluginType, plugins) => {
-  return plugins
-    .map(x => getAugmentatinosForPlugin(x, forPluginType))
+const getAugmentations = (forPluginType, plugins) =>
+  plugins
+  .map(x => getAugmentatinosForPlugin(x, forPluginType))
+  .filter(exists)
+
+const getAugmentationsOfType = (augmentationType, forPluginType, plugins) => {
+  const augmentations = getAugmentations(forPluginType, plugins)
+  return augmentations
+    .map(x => x[augmentationType])
     .filter(exists)
 }
 
-const getMutatorAugmentations = (forPluginType, plugins) => {
-  const augmentations = getAugmentations(forPluginType, plugins)
-  return augmentations
-    .map(x => x.mutator)
-    .filter(exists)
-}
 
-const getEnabledAugmentations = (forPluginType, plugins) => {
-  const augmentations = getAugmentations(forPluginType, plugins)
-  return augmentations
-    .map(x => x.enabled)
-    .filter(exists)
-}
+const getMutatorAugmentations = curry(getAugmentationsOfType, 'mutator')
+const getEnabledAugmentations= curry(getAugmentationsOfType, 'enabled')
 
 const getPlugin = (type, state) => {
   const registeredPluginIndex = state.registeredPluginsByType[type]
