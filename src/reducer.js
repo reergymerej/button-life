@@ -26,7 +26,10 @@ const getAugmentationsOfType = (augmentationType, forPluginType, plugins) => {
 const getMutatorAugmentations = curry(getAugmentationsOfType, 'mutator')
 const getEnabledAugmentations= curry(getAugmentationsOfType, 'enabled')
 
-const getPlugin = (type, state) => state.plugins.find(plugin => plugin.type === type)
+const byPropValue = (prop, value) => (x) => x[prop] === value
+const byType = curry(byPropValue, 'type')
+
+const getPlugin = (type, state) => state.plugins.find(byType(type))
 
 const pluginExecute = (state, action) => {
   const type = action.pluginType
@@ -51,15 +54,11 @@ const pluginAdd = (state, action) => {
     plugin,
   ]
   state = plugins[action.pluginType].getInitialState(state)
-  state.registeredPluginsByType = {
-    ...state.registeredPluginsByType,
-    [action.pluginType]: state.plugins.length - 1,
-  }
   return state
 }
 
 const pluginRemove = (state, action) => {
-  const index = state.plugins.findIndex(x => x.type === action.pluginType)
+  const index = state.plugins.findIndex(byType(action.pluginType))
   const plugins = [
     ...state.plugins.slice(0, index),
     ...state.plugins.slice(index + 1),
@@ -67,10 +66,6 @@ const pluginRemove = (state, action) => {
   return {
     ...state,
     plugins,
-    registeredPluginsByType: {
-      ...state.registeredPluginsByType,
-      [action.pluginType]: -1,
-    },
   }
 }
 
@@ -84,7 +79,6 @@ const initialState = {
   clicks: 0,
   assets: 0,
   plugins: [],
-  registeredPluginsByType: {},
 }
 
 const reducer = (state = initialState, action) => {
