@@ -9,13 +9,14 @@ let initialState = {
 
 const exists = (x) => !!x
 
+const getAugmentatinosForPlugin = (plugin, type) => {
+  const augmentations = plugin.augmentations || {}
+  return augmentations[type] || augmentations['*']
+}
+
 const getAugmentations = (forPluginType, plugins) => {
   return plugins
-    .map(x => {
-      const augmentations = x.augmentations || {}
-      return augmentations[forPluginType]
-        || augmentations['*']
-    })
+    .map(x => getAugmentatinosForPlugin(x, forPluginType))
     .filter(exists)
 }
 

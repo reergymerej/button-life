@@ -52,3 +52,5 @@ runtime:
 
 * Make add/remove plugins a plugin
 * Allow for dynamic button text
+* Move side effects out of reducers (random events) - They are not replayable
+  like this.

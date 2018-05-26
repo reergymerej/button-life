@@ -133,12 +133,13 @@ export const defend = {
     return {
       ...state,
       defend_underAttack: false,
+      defend_lossRate: 100,
     }
   },
   mutator(state) {
     return {
       ...state,
-      defend_underAttack: false,
+      defend_underAttack: false, // TODO: Vary based on some type of strength attribute.
     }
   },
   enabled(state) {
@@ -150,14 +151,24 @@ export const defend = {
       mutator(state) {
         const active = state.defend_underAttack
         const positive = num => num < 0 ? 0 : num
+        const assets = active
+          ? positive(state.assets - state.defend_lossRate)
+          : state.assets
+        const defend_underAttack = assets > 0
+          && (active || Math.random() <= 0.1)
         return {
           ...state,
-          defend_underAttack: active || Math.random() <= 0.1,
-          assets: active
-            ? positive(state.assets - 100)
-            : state.assets,
+          defend_underAttack,
+          assets,
         }
       },
+    },
+  },
+  visibleState: {
+    'Theives Stealing': (state) => {
+      return state.defend_underAttack
+        ? state.defend_lossRate
+        : 0
     },
   },
 }
