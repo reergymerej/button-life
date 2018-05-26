@@ -1,19 +1,14 @@
 import * as plugins from './plugins'
 
-let initialState = {
-  clicks: 0,
-  assets: 0,
-  plugins: [],
-  registeredPluginsByType: {},
-}
-
 const curry = (fn, arg) => (...args) => fn(arg, ...args)
 
 const exists = (x) => !!x
 
+const getTypeOrDefault = (obj, type) => obj[type] || obj['*']
+
 const getAugmentatinosForPlugin = (plugin, type) => {
   const augmentations = plugin.augmentations || {}
-  return augmentations[type] || augmentations['*']
+  return getTypeOrDefault(augmentations, type)
 }
 
 const getAugmentations = (forPluginType, plugins) =>
@@ -28,16 +23,10 @@ const getAugmentationsOfType = (augmentationType, forPluginType, plugins) => {
     .filter(exists)
 }
 
-
 const getMutatorAugmentations = curry(getAugmentationsOfType, 'mutator')
 const getEnabledAugmentations= curry(getAugmentationsOfType, 'enabled')
 
-const getPlugin = (type, state) => {
-  const registeredPluginIndex = state.registeredPluginsByType[type]
-  if (registeredPluginIndex !== undefined) {
-    return state.plugins[registeredPluginIndex]
-  }
-}
+const getPlugin = (type, state) => state.plugins.find(plugin => plugin.type === type)
 
 const pluginExecute = (state, action) => {
   const type = action.pluginType
@@ -70,10 +59,10 @@ const pluginAdd = (state, action) => {
 }
 
 const pluginRemove = (state, action) => {
-  const registeredPluginIndex = state.registeredPluginsByType[action.pluginType]
+  const index = state.plugins.findIndex(x => x.type === action.pluginType)
   const plugins = [
-    ...state.plugins.slice(0, registeredPluginIndex),
-    ...state.plugins.slice(registeredPluginIndex + 1),
+    ...state.plugins.slice(0, index),
+    ...state.plugins.slice(index + 1),
   ]
   return {
     ...state,
@@ -89,6 +78,13 @@ const reducerBranches = {
   'plugin-execute': pluginExecute,
   'plugin-add': pluginAdd,
   'plugin-remove': pluginRemove,
+}
+
+const initialState = {
+  clicks: 0,
+  assets: 0,
+  plugins: [],
+  registeredPluginsByType: {},
 }
 
 const reducer = (state = initialState, action) => {
