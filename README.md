@@ -1,5 +1,6 @@
 # Button Life
 
+
 This is kind of a joke, but it turned into a cool architecture challenge.  Lots
 of games boil down to basically these three things:
 
@@ -20,6 +21,7 @@ That example can actually be stripped down a bit more.
 That's the kernel of the game.  It sucks.  But this is an architecture challenge
 that allows for expansion.
 
+![demo](https://user-images.githubusercontent.com/1720010/51041089-1d6d9580-1587-11e9-9b35-1e8412a1e6e2.gif)
 
 
 ## plugin interface
@@ -54,3 +56,4 @@ runtime:
 * Allow for dynamic button text
 * Move side effects out of reducers (random events) - They are not replayable
   like this.
+* When removing a plugin, remove its parts of state.
